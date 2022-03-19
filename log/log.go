@@ -79,6 +79,7 @@ func (this *Log) SetLogFile(File string) {
 	file = file2
 }
 
+//获取函数名字
 func RunFuncName() string {
 	pc := make([]uintptr, 1)
 	runtime.Callers(2, pc)
