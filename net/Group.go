@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+//全局
 var groups = struct {
 	sync.RWMutex
 	m map[Group][]*WellConnection
