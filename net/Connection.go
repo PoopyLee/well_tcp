@@ -79,6 +79,7 @@ func (this *WellConnection) Close() {
 	this.con.Close()
 }
 
+//设置路由
 func (this *WellConnection) setConnRouter(c WellConnRouter) {
 	this.connRouter = c
 }
