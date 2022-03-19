@@ -12,6 +12,13 @@
 
 Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由模块、消息模块、链接模块、分组模块、日志模块。
 <br>
+
+## 使用go get下载依赖
+
+````go
+ go get -v -u github.com/lvwei25/well_tcp
+````
+
 只需要简单的两行代码即可启动服务:
 
 ````go
