@@ -1,5 +1,6 @@
 package net
 
+//信息
 type WellMessage struct {
 	Data    []byte
 	DataLen uint32
