@@ -79,6 +79,7 @@ func (this *WellServer) Close() {
 	this.lin.Close()
 }
 
+//创建句柄
 func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 	s := WellServer{
 		Name:         Name,
