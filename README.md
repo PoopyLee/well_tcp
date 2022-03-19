@@ -7,6 +7,8 @@
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/lvwei25/well_tcp)
 ![GitHub AppVersion](https://img.shields.io/badge/Version-V1.0-blue)
+
+
 ##介绍
 
 Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由模块、消息模块、链接模块、分组模块、日志模块。
@@ -28,7 +30,10 @@ Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由�
 
 > Well 第一个版本发布于 2022 年 3 月 19 日
 
+
 ###Server（服务）
+
+
   ```text
 属性
     Name（服务名称）
@@ -42,7 +47,10 @@ Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由�
     Close（关闭服务）
 ``` 
         
+        
 ###Connection（链接）
+
+
 ```text
 属性
     ID（连接唯一ID）
@@ -60,6 +68,8 @@ Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由�
 
 
 ###Router（路由）
+
+
 ```text
 ServerRouter（服务路由）
     方法
@@ -78,6 +88,8 @@ ConnRouter（连接路由）
 
 
 ###Links（链接管理）
+
+
 ```text
 属性
     m map[int64]*WellConnection
@@ -93,6 +105,8 @@ ConnRouter（连接路由）
 
 
 ###Groups（分组管理）
+
+
 ```text
 属性
     groupId int64	//分组ID
@@ -108,6 +122,8 @@ ConnRouter（连接路由）
 
 
 ###Log（日志打印）
+
+
 ```text
 属性
     prefix 打印前缀
@@ -124,6 +140,8 @@ ConnRouter（连接路由）
 
 
 ###Message（信息）
+
+
 ```text
 属性
     Data 数据
