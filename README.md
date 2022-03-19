@@ -72,15 +72,15 @@ Well是一款基于Golang的轻量级TCP服务器，其为用户内置了路由�
 ```text
 ServerRouter（服务路由）
     方法
-        OnStart（服务启动后，监听前执行）
-        OnClose（服务关闭前执行）
+        OnStart()（服务启动后，监听前执行）
+        OnClose()（服务关闭前执行）
     属性（无属性，用户继承该结构体便有其拥有的方法）
 ConnRouter（连接路由）
     方法
-        OnConnect（连接后第一次执行）
-        OnMessage（接收到数据时执行）
-        OnClose（连接关闭时执行）
-        OnError（连接出错时执行）
+        OnConnect(conn *WellConnection)（连接后第一次执行）
+        OnMessage(request *WellRequest)（接收到数据时执行）
+        OnClose(conn *WellConnection)（连接关闭时执行）
+        OnError(err error)（连接出错时执行）
     属性（无属性，用户继承该结构体便有其拥有的方法）
 ```
 
