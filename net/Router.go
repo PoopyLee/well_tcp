@@ -13,6 +13,7 @@ type WellServerRouter interface {
 type ConnRouter struct {
 }
 
+//方法
 type WellConnRouter interface {
 	OnConnect(conn *WellConnection)
 	OnError(err error)
