@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+//全局
 var links = struct {
 	sync.RWMutex
 	m map[int64]*WellConnection
