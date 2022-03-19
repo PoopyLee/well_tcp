@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-//全局
+//全局分组管理
 var groups = struct {
 	sync.RWMutex
 	m map[Group][]*WellConnection
