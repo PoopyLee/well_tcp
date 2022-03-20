@@ -1,8 +1,10 @@
 package net
 
 import (
+	"math/rand"
 	"net"
 	"strings"
+	"time"
 )
 
 var tempId int64
@@ -14,8 +16,8 @@ type WellConnection struct {
 	connRouter WellConnRouter
 	con        *net.TCPConn
 	isClose    chan bool
-	Links      LinkManger
-	Groups     Group
+	LinkManger
+	Group
 }
 
 type wellConnInterface interface {
@@ -35,9 +37,7 @@ func (this *WellConnection) Start() {
 	//go this.writeData()
 	select {
 	case <-this.isClose:
-		this.con.Close()
-		this.Links.deletLink(this.ConnId)
-		this.Groups.delGroup(this.ConnId)
+		this.Close()
 		return
 	}
 }
@@ -73,10 +73,10 @@ func (this *WellConnection) writeData() {
 }
 
 func (this *WellConnection) Close() {
-	this.connRouter.OnClose(this)
-	this.Links.deletLink(this.ConnId)
-	this.Groups.delGroup(this.ConnId)
 	this.con.Close()
+	this.deletLink(this.ConnId)
+	this.delGroup(this.ConnId)
+	this.connRouter.OnClose(this)
 }
 
 //设置路由
@@ -85,7 +85,8 @@ func (this *WellConnection) setConnRouter(c WellConnRouter) {
 }
 
 func NewConnHandle(con *net.TCPConn) wellConnInterface {
-	tempId++
+	rand.Seed(time.Now().Unix())
+	tempId := rand.Int63n(9223372036854775807)
 	c := WellConnection{
 		ConnId:  tempId,
 		IpAddr:  "",
@@ -96,6 +97,6 @@ func NewConnHandle(con *net.TCPConn) wellConnInterface {
 	ips := strings.Split(con.RemoteAddr().String(), ":")
 	c.IpAddr = ips[0]
 	c.Port = ips[1]
-	c.Links.addLink(c.ConnId, &c)
+	c.addLink(c.ConnId, &c)
 	return &c
 }
