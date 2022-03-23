@@ -64,9 +64,6 @@ Well_TCP是一款基于Golang的轻量级嵌入式TCP服务器，其为用户内
     ID（连接唯一ID）
     IpAddr（连接ip地址）
     Port（连接端口）
-    connRouter（连接路由）
-    con （net.Conn）
-    isClose（是否关闭）
 方法
     Start（开始运行）
     WriteString（向客户端 写入字符串）
@@ -102,8 +99,6 @@ ConnRouter（连接路由）
 属性
     m map[int64]*WellConnection
 方法
-    addLink(Id int64,Con *WellConnection)添加连接
-    deletLink(Id int64)删除连接
     GetLink(Id int64) *WellConnection 获取连接
     GetAllLink()map[int64]*WellConnection 获取全部连接
     SendToAll(Data string) 向所有的连接发送数据
@@ -117,14 +112,14 @@ ConnRouter（连接路由）
 
 ```text
 属性
-    groupId int64	//分组ID
-    groupName string	//分组名称
+    无
 方法
-    AddGroup(GroupId int64,GroupName string,Con WellConnection) 将某个连接添加到分组中
-    SendToGId(GroupId int64,Data string) 向某个分组发送数据
-    DelGroupConn(GroupId int64,Conn *WellConnection) 删除某个组中的某个连接
-    DelGroup(GroupId int64,GroupName string) 删除分组
-    delGroup(Id int64)删除指定连接ID的分组
+    AddGroup(GroupName string,Con WellConnection) 将某个连接添加到分组中
+    SendToGroup(GroupName string, Data string) 向某个组的所有成员发送信息
+    DelGroupConn(GroupName string, ConnId int64) 移除某个组中的某个连接(并不会关掉连接)
+    DelGroup(GroupName string) 删除分组
+    GetAllGroupCon(GroupName string) []WellConnection   获取指定分组的所有连接
+    GetAllGroup() []string 获取所有分组的名字
 ```
 
 

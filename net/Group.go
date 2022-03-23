@@ -30,7 +30,7 @@ func (this *Group) AddGroup(GroupName string, Con WellConnection) {
 }
 
 //向某个组的所有成员发送信息
-func (this *Group) SendToGId(GroupName string, Data string) {
+func (this *Group) SendToGroup(GroupName string, Data string) {
 	go func() {
 		for k, v := range groups.m {
 			if strings.Compare(k, GroupName) == 0 {
@@ -40,17 +40,17 @@ func (this *Group) SendToGId(GroupName string, Data string) {
 				return
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->GroupId Not Exits,Send To ", GroupName, " Failed!")
+		log.NewLoger().Error(log.RunFuncName(), "--->GroupName Not Exits,Send To ", GroupName, " Failed!")
 	}()
 }
 
-//删除某个组中的某个连接
-func (this *Group) DelGroupConn(GroupName string, Conn *WellConnection) {
+//移除某个组中的某个连接(并不会关掉连接)
+func (this *Group) DelGroupConn(GroupName string, ConnId int64) {
 	go func() {
 		for k, v := range groups.m {
 			if strings.Compare(k, GroupName) == 0 {
 				for n, m := range v {
-					if m.ConnId == Conn.ConnId {
+					if m.ConnId == ConnId {
 						groups.RLock()
 						value, ok := groups.m[k]
 						groups.RUnlock()
@@ -66,11 +66,11 @@ func (this *Group) DelGroupConn(GroupName string, Conn *WellConnection) {
 				return
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->GroupId Not Exits,Delete Failed!")
+		log.NewLoger().Error(log.RunFuncName(), "--->GroupName Or ConnId Not Exits,Delete Failed!")
 	}()
 }
 
-//删除指定分组ID的分组
+//删除分组
 func (this *Group) DelGroup(GroupName string) {
 	delete(groups.m, GroupName)
 }
@@ -99,7 +99,7 @@ func (this *Group) delGroup(Id int64) {
 	}()
 }
 
-//获取所有分组的ID和Name
+//获取所有分组的名字
 func (this *Group) GetAllGroup() []string {
 	c := make(chan []string, 1)
 	defer close(c)
@@ -113,7 +113,7 @@ func (this *Group) GetAllGroup() []string {
 	return <-c
 }
 
-//获取所有分组的ID和Name
+//获取指定分组的所有连接
 func (this *Group) GetAllGroupCon(GroupName string) []WellConnection {
 	c := make(chan []WellConnection, 1)
 	defer close(c)
