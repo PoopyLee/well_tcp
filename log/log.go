@@ -32,14 +32,14 @@ func (this *Log) Debug(a ...interface{}) {
 	if file != nil {
 		file.WriteString(fmt.Sprintln(this.prefix, "DEBUG", a))
 	}
-	color.New(color.FgBlue).Println(this.prefix, "DEBUG", a)
+	color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
 }
 
 func (this *Log) Info(a ...interface{}) {
 	if file != nil {
 		file.WriteString(fmt.Sprintln(this.prefix, "INFO", a))
 	}
-	color.New(color.FgGreen).Println(this.prefix, "INFO", a)
+	color.New(color.FgBlue).Println(this.prefix, "INFO", a)
 }
 func (this *Log) Warn(a ...interface{}) {
 	if file != nil {

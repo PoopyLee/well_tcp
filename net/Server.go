@@ -2,19 +2,26 @@ package net
 
 import (
 	"Well/log"
+	"fmt"
 	"github.com/fatih/color"
 	"net"
+	"runtime"
+	"strings"
 )
 
 var Logo = `
-____    __    ____  _______  __       __      
-\   \  /  \  /   / |   ____||  |     |  |     
- \   \/    \/   /  |  |__   |  |     |  |     
-  \            /   |   __|  |  |     |  |     
-   \    /\    /    |  |____ |  |----.|  |----.
-    \__/  \__/     |_______||_______||_______|
-
+██╗    ██╗███████╗██╗     ██╗      ██████╗  ██████╗ 
+██║    ██║██╔════╝██║     ██║     ██╔════╝ ██╔═══██╗
+██║ █╗ ██║█████╗  ██║     ██║     ██║  ███╗██║   ██║
+██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║   ██║
+╚███╔███╔╝███████╗███████╗███████╗╚██████╔╝╚██████╔╝
+ ╚══╝╚══╝ ╚══════╝╚══════╝╚══════╝ ╚═════╝  ╚═════╝
 `
+var topLine = `=========================================WellGo=========================================`
+var bottomLine = `========================================================================================`
+
+var github = `https://github.com/lvwei25/well_tcp`
+var gitee = `https://gitee.com/leelvwei/well_tcp`
 
 type WellServer struct {
 	Name         string
@@ -49,6 +56,7 @@ func (this *WellServer) Run() {
 	}
 	this.lin = lin
 	defer lin.Close()
+
 	log.NewLoger().Info("The Server Name:", this.Name, "The Server Version:", this.Version, "And Now Server is Running!")
 
 	this.ServerRouter.OnStart() //服务启动前执行函数
@@ -56,13 +64,14 @@ func (this *WellServer) Run() {
 	for {
 		con, err := lin.AcceptTCP()
 		if err != nil {
-			log.NewLoger().Error("connection error execution", err)
+			log.NewLoger().Error("Connection error execution", err)
 			this.ConnRouter.OnError(err) //连接出错时执行
 		}
 		c := NewConnHandle(con)
 		c.setConnRouter(this.ConnRouter)
 		go c.Start()
 	}
+
 }
 
 func (this *WellServer) AddServerRouter(s WellServerRouter) {
@@ -91,5 +100,17 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
+	runlogo(s)
 	return &s
+}
+
+func runlogo(s WellServer) {
+	fmt.Println(topLine)
+	fmt.Println(fmt.Sprintf("\tWellGo Version:%s\tNeed Go Version:1.16\tGo Version:%s", s.Version, runtime.Version()))
+	fmt.Println("")
+	fmt.Println(fmt.Sprintf("\t%s:%s:%s\tGoroutine Count:%d", strings.ToUpper(s.IpVersion), s.IpAddr, s.Port, runtime.NumGoroutine()))
+	fmt.Println("")
+	fmt.Println(bottomLine)
+	fmt.Println(fmt.Sprintf("[Github] %s", github))
+	fmt.Println(fmt.Sprintf("[Gitee]  %s", gitee))
 }
