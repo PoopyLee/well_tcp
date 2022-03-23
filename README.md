@@ -1,6 +1,6 @@
 # Well_TCP - Golang 轻量级嵌入式TCP服务器
 <p align="center">
-    <a href="/" target="_blank" style="text-align: center">
+    <a href="https://github.com/lvwei25/well_tcp/blob/main/logo.png" target="_blank" style="text-align: center">
         <img src="https://github.com/lvwei25/well_tcp/blob/main/logo.png"  alt="Well_TCP" />
     </a>
 </p>
@@ -31,7 +31,7 @@ Well_TCP是一款基于Golang的轻量级嵌入式TCP服务器，其为用户内
 ````
 
 <p align="center">
-    <a href="/" target="_blank" style="text-align: center">
+    <a href="https://github.com/lvwei25/well_tcp/blob/main/test_img/test_img.png" target="_blank" style="text-align: center">
         <img src="https://github.com/lvwei25/well_tcp/blob/main/test_img/test_img.png" alt="Well_TCP" />
     </a>
 </p>
