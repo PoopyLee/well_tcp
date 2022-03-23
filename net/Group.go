@@ -31,11 +31,17 @@ func (this *Group) AddGroup(GroupName string, Con WellConnection) {
 
 //向某个组的所有成员发送信息
 func (this *Group) SendToGroup(GroupName string, Data string) {
+	name := make(chan string, 1)
+	data := make(chan string, 1)
+	name <- GroupName
+	data <- Data
+	defer close(name)
+	defer close(data)
 	go func() {
 		for k, v := range groups.m {
-			if strings.Compare(k, GroupName) == 0 {
+			if strings.Compare(k, <-name) == 0 {
 				for _, m := range v {
-					m.WriteString(Data)
+					m.WriteString(<-data)
 				}
 				return
 			}
@@ -46,11 +52,17 @@ func (this *Group) SendToGroup(GroupName string, Data string) {
 
 //移除某个组中的某个连接(并不会关掉连接)
 func (this *Group) DelGroupConn(GroupName string, ConnId int64) {
+	name := make(chan string, 1)
+	id := make(chan int64, 1)
+	id <- ConnId
+	name <- GroupName
+	defer close(name)
+	defer close(id)
 	go func() {
 		for k, v := range groups.m {
-			if strings.Compare(k, GroupName) == 0 {
+			if strings.Compare(k, <-name) == 0 {
 				for n, m := range v {
-					if m.ConnId == ConnId {
+					if m.ConnId == <-id {
 						groups.RLock()
 						value, ok := groups.m[k]
 						groups.RUnlock()
@@ -77,10 +89,17 @@ func (this *Group) DelGroup(GroupName string) {
 
 //删除连接ID的连接
 func (this *Group) delGroup(Id int64) {
+	id := make(chan int64, 1)
+	id <- Id
+	defer close(id)
 	go func() {
+		len := len(groups.m)
+		if len <= 0 {
+			return
+		}
 		for k, v := range groups.m {
 			for n, m := range v {
-				if m.ConnId == Id {
+				if m.ConnId == <-id {
 					groups.RLock()
 					value, ok := groups.m[k]
 					groups.RUnlock()

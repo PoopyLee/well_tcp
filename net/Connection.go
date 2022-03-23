@@ -73,10 +73,10 @@ func (this *WellConnection) writeData() {
 }
 
 func (this *WellConnection) Close() {
-	this.con.Close()
 	this.deletLink(this.ConnId)
 	this.delGroup(this.ConnId)
 	this.connRouter.OnClose(this)
+	this.con.Close()
 }
 
 //设置路由
