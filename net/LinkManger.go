@@ -1,7 +1,7 @@
 package net
 
 import (
-	"Well/log"
+	"github.com/lvwei25/well_tcp/log"
 	"sync"
 )
 

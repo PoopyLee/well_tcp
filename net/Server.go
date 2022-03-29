@@ -1,9 +1,9 @@
 package net
 
 import (
-	"Well/log"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/lvwei25/well_tcp/log"
 	"net"
 	"runtime"
 	"strings"
