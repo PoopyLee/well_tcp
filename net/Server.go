@@ -92,7 +92,7 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		Port:         Port,
 		ServerRouter: &ServerRouter{},
 		ConnRouter:   &ConnRouter{},
-		Version:      "1.0.1",
+		Version:      "1.1.2",
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
