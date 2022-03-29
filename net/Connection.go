@@ -99,11 +99,12 @@ func NewConnHandle(con *net.TCPConn) wellConnInterface {
 	rand.Seed(time.Now().Unix())
 	tempId := rand.Int63n(9223372036854775807)
 	c := WellConnection{
-		ConnId:  tempId,
-		IpAddr:  "",
-		Port:    "",
-		con:     con,
-		isClose: make(chan bool),
+		ConnId:     tempId,
+		IpAddr:     "",
+		Port:       "",
+		con:        con,
+		connRouter: new(ConnRouter),
+		isClose:    make(chan bool),
 	}
 	ips := strings.Split(con.RemoteAddr().String(), ":")
 	c.IpAddr = ips[0]
