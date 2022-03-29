@@ -1,4 +1,4 @@
-# Well_TCP - Golang 轻量级嵌入式TCP服务器
+# Well_TCP - Golang 轻量级TCP嵌入式服务器
 <p align="center">
     <a href="https://github.com/lvwei25/well_tcp/blob/main/logo.png" target="_blank" style="text-align: center">
         <img src="https://github.com/lvwei25/well_tcp/blob/main/logo.png"  alt="Well_TCP" />
@@ -10,10 +10,12 @@
 
 ## 介绍
 
-Well_TCP是一款基于Golang的轻量级嵌入式TCP服务器，其为用户内置了路由模块、消息模块、链接模块、分组模块、日志模块，能够满足日常的开发。
+Well_TCP是一款基于Golang的轻量级TCP嵌入式服务器，其为用户内置了路由模块、消息模块、链接模块、分组模块、日志模块，能够满足日常的开发。
 <br>
 
 ###### tips:比如目前本人使用该框架开发的“xxx智慧监控系统”，能够有效的处理各种事件！
+
+<a herf="https://github.com/lvwei25/well_tcp_demo">详情点击“Well_Tcp开发项目示例”此处</a>
 
 ## 使用go get下载依赖
 
