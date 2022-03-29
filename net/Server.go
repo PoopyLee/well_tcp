@@ -27,7 +27,7 @@ type WellServer struct {
 	Name         string
 	IpAddr       string
 	Port         string
-	ServerRouter ServerRouter
+	ServerRouter WellServerRouter
 	ConnRouter   ConnRouter
 	IpVersion    string
 	Version      string
@@ -40,7 +40,7 @@ func init() {
 
 type wellServerInterface interface {
 	Run()
-	AddServerRouter(s ServerRouter)
+	AddServerRouter(s WellServerRouter)
 	AddConnRouter(c ConnRouter)
 	Close()
 }
@@ -74,7 +74,7 @@ func (this *WellServer) Run() {
 
 }
 
-func (this *WellServer) AddServerRouter(s ServerRouter) {
+func (this *WellServer) AddServerRouter(s WellServerRouter) {
 	log.NewLoger().Info("Add ServerRouter Success!")
 	this.ServerRouter = s
 }
@@ -94,7 +94,7 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		Name:         Name,
 		IpAddr:       IpAddr,
 		Port:         Port,
-		ServerRouter: ServerRouter{},
+		ServerRouter: &ServerRouter{},
 		ConnRouter:   ConnRouter{},
 		Version:      "1.0",
 		IpVersion:    "tcp",
