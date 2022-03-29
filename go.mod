@@ -1,4 +1,4 @@
-module Well
+module github.com/lvwei25/well_tcp
 
 go 1.16
 
