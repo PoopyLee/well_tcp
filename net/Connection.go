@@ -14,7 +14,7 @@ type WellConnection struct {
 	ConnId     int64
 	IpAddr     string
 	Port       string
-	connRouter WellConnRouter
+	connRouter ConnRouter
 	con        *net.TCPConn
 	isClose    chan bool
 	LinkManger
@@ -29,7 +29,7 @@ type wellConnInterface interface {
 
 	readData()
 	writeData()
-	setConnRouter(c WellConnRouter)
+	setConnRouter(c ConnRouter)
 }
 
 func (this *WellConnection) Start() {
@@ -91,7 +91,7 @@ func (this *WellConnection) Close() {
 }
 
 //设置路由
-func (this *WellConnection) setConnRouter(c WellConnRouter) {
+func (this *WellConnection) setConnRouter(c ConnRouter) {
 	this.connRouter = c
 }
 
@@ -103,7 +103,7 @@ func NewConnHandle(con *net.TCPConn) wellConnInterface {
 		IpAddr:     "",
 		Port:       "",
 		con:        con,
-		connRouter: new(ConnRouter),
+		connRouter: ConnRouter{},
 		isClose:    make(chan bool),
 	}
 	ips := strings.Split(con.RemoteAddr().String(), ":")
