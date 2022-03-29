@@ -79,8 +79,10 @@ func (this *WellConnection) Close() {
 
 	fmt.Println(&(this.connRouter) != nil)
 	fmt.Println(this.connRouter != nil)
+	fmt.Println(this.connRouter.OnClose)
+	fmt.Println((this.connRouter.OnClose) != nil)
 
-	if &(this.connRouter) != nil {
+	if (this.connRouter.OnClose) != nil {
 		this.connRouter.OnClose(this)
 	}
 	this.con.Close()
