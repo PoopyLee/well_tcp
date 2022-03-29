@@ -2,7 +2,6 @@ package net
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/lvwei25/well_tcp/log"
 	"net"
 	"runtime"
@@ -32,10 +31,6 @@ type WellServer struct {
 	IpVersion    string
 	Version      string
 	lin          *net.TCPListener
-}
-
-func init() {
-	color.New(color.FgHiMagenta).Println(Logo)
 }
 
 type wellServerInterface interface {
