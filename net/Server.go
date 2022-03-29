@@ -2,6 +2,7 @@ package net
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/lvwei25/well_tcp/log"
 	"net"
 	"runtime"
@@ -91,7 +92,7 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		Port:         Port,
 		ServerRouter: &ServerRouter{},
 		ConnRouter:   &ConnRouter{},
-		Version:      "1.1.1",
+		Version:      "1.0.1",
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
@@ -100,6 +101,7 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 }
 
 func runlogo(s WellServer) {
+	color.New(color.FgHiMagenta).Println(Logo)
 	fmt.Println(topLine)
 	fmt.Println(fmt.Sprintf("\tWellGo Version:%s\tNeed Go Version:1.16\tGo Version:%s", s.Version, runtime.Version()))
 	fmt.Println("")
