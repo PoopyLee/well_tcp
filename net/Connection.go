@@ -1,6 +1,7 @@
 package net
 
 import (
+	"fmt"
 	"math/rand"
 	"net"
 	"strings"
@@ -75,6 +76,9 @@ func (this *WellConnection) writeData() {
 func (this *WellConnection) Close() {
 	this.deletLink(this.ConnId)
 	this.delGroup(this.ConnId)
+
+	fmt.Println(&(this.connRouter) != nil)
+	fmt.Println(this.connRouter != nil)
 
 	if &(this.connRouter) != nil {
 		this.connRouter.OnClose(this)
