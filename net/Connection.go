@@ -13,7 +13,7 @@ type WellConnection struct {
 	ConnId     int64
 	IpAddr     string
 	Port       string
-	connRouter ConnRouter
+	connRouter WellConnRouter
 	con        *net.TCPConn
 	isClose    chan bool
 	LinkManger
@@ -28,7 +28,7 @@ type wellConnInterface interface {
 
 	readData()
 	writeData()
-	setConnRouter(c ConnRouter)
+	setConnRouter(c WellConnRouter)
 }
 
 func (this *WellConnection) Start() {
@@ -80,7 +80,7 @@ func (this *WellConnection) Close() {
 }
 
 //设置路由
-func (this *WellConnection) setConnRouter(c ConnRouter) {
+func (this *WellConnection) setConnRouter(c WellConnRouter) {
 	this.connRouter = c
 }
 
