@@ -20,7 +20,7 @@ Well_TCP是一款基于Golang的轻量级TCP嵌入式服务器，其为用户内
 ## 使用go get下载依赖
 
 ````go
- go get -v -u github.com/lvwei25/well_tcp
+ go get github.com/lvwei25/well_tcp
 ````
 
 只需要简单的两行代码即可启动服务:
