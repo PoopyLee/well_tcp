@@ -1,15 +1,16 @@
 package log
 
 import (
+	"fmt"
 	"github.com/fatih/color"
-	"log"
+	"os"
 	"runtime"
 	"time"
 )
 
 type Log struct {
 	prefix string
-	log.Logger
+	file   *os.File
 }
 
 type Logging interface {
@@ -24,31 +25,48 @@ type Logging interface {
 }
 
 func (this *Log) Debug(a ...interface{}) {
-	color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
-	this.Println(this.prefix, "DEBUG", a)
+	if this.file == nil {
+		color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "DEBUG", a))
+	}
 }
 
 func (this *Log) Info(a ...interface{}) {
-	color.New(color.FgBlue).Println(this.prefix, "INFO", a)
-	this.Println(this.prefix, "INFO", a)
+	if this.file == nil {
+		color.New(color.FgBlue).Println(this.prefix, "INFO", a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "INFO", a))
+	}
 }
 func (this *Log) Warn(a ...interface{}) {
-	color.New(color.FgYellow).Println(this.prefix, "WARN", a)
-	this.Println(this.prefix, "WARN", a)
+	if this.file == nil {
+		color.New(color.FgYellow).Println(this.prefix, "WARN", a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "WARN", a))
+	}
 }
 func (this *Log) Error(a ...interface{}) {
-
-	color.New(color.FgRed).Println(this.prefix, "ERROR", a)
-	this.Println(this.prefix, "ERROR", a)
+	if this.file == nil {
+		color.New(color.FgRed).Println(this.prefix, "ERROR", a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "ERROR", a))
+	}
 }
 func (this *Log) Panic(a ...interface{}) {
-	color.New(color.FgCyan).Println(this.prefix, "PANIC", a)
-	this.Println(this.prefix, "PANIC", a)
+	if this.file == nil {
+		color.New(color.FgCyan).Println(this.prefix, "PANIC", a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "PANIC", a))
+	}
 }
 
 func (this *Log) Println(a ...interface{}) {
-	color.New().Println(a)
-	this.Println(a)
+	if this.file == nil {
+		color.New().Println(a)
+	} else {
+		this.file.WriteString(fmt.Sprintf("%v", a))
+	}
 }
 
 func (this *Log) SetPrefix(Prefix string) {
@@ -56,7 +74,10 @@ func (this *Log) SetPrefix(Prefix string) {
 }
 
 func (this *Log) SetLogFile(File string) {
-	this.SetLogFile(File)
+	if this.file != nil {
+		this.file.Close()
+	}
+	this.file, _ = os.Create(File)
 }
 
 //获取函数名字
