@@ -5,14 +5,18 @@ import (
 	"github.com/fatih/color"
 	"os"
 	"runtime"
+	"sync"
 	"time"
 )
 
 var log_file *os.File
+var log_prefix string
+var time_prefix string
 
 type Log struct {
 	prefix string
 	file   *os.File
+	sync.RWMutex
 }
 
 type Logging interface {
@@ -27,20 +31,18 @@ type Logging interface {
 }
 
 func init() {
-	os.Mkdir("logs", 0777)
-	file2, err := os.Open("logs/" + time.Now().Format("2006-01-02") + ".log")
-	if err != nil {
-		file2, _ = os.Create("logs/" + time.Now().Format("2006-01-02") + ".log")
-	}
-	log_file = file2
+	log_file = nil
+	log_prefix = "[WELL]"
+	time_prefix = time.Now().Format("2006-01-02 / 15:04:05") + " ▶"
 }
 
 func (this *Log) Debug(a ...interface{}) {
 	if this.file == nil {
 		color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "DEBUG", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(this.prefix, "DEBUG", a))
 	}
 }
 
@@ -48,32 +50,40 @@ func (this *Log) Info(a ...interface{}) {
 	if this.file == nil {
 		color.New(color.FgBlue).Println(this.prefix, "INFO", a)
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "INFO", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(this.prefix, "INFO", a))
 	}
 }
 func (this *Log) Warn(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgYellow).Println(this.prefix, "WARN", a)
+		color.New(color.FgYellow).Println(this.prefix, RunFuncName(), "WARN", a)
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "WARN", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(this.prefix, RunFuncName(), "WARN", a))
 	}
 }
 func (this *Log) Error(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgRed).Println(this.prefix, "ERROR", a)
+		color.New(color.FgRed).Println(this.prefix, RunFuncName(), "ERROR", a)
+		os.Exit(0)
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "ERROR", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(this.prefix, RunFuncName(), "ERROR", a))
+		os.Exit(0)
 	}
 }
 func (this *Log) Panic(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgCyan).Println(this.prefix, "PANIC", a)
+		color.New(color.FgCyan).Println(this.prefix, RunFuncName(), "PANIC", a)
+		panic(fmt.Sprintln(a))
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "PANIC", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(this.prefix, RunFuncName(), "PANIC", a))
+		panic(fmt.Sprintln(a))
 	}
 }
 
@@ -81,20 +91,26 @@ func (this *Log) Println(a ...interface{}) {
 	if this.file == nil {
 		color.New().Println(a)
 	} else {
-		this.file.WriteString(fmt.Sprintf("%v", a))
-		this.file.Sync()
+		this.Lock()
+		defer this.Unlock()
+		this.file.WriteString(fmt.Sprintln(a))
 	}
 }
 
 func (this *Log) SetPrefix(Prefix string) {
-	this.prefix = Prefix
+	log_prefix = Prefix
 }
 
 func (this *Log) SetLogFile(File string) {
 	if this.file != nil {
 		this.file.Close()
 	}
-	this.file, _ = os.Create(File)
+	file2, err := os.OpenFile(File, os.O_APPEND, 0777)
+	if err != nil {
+		file2, err = os.Create(File)
+		NewLoger().Error("no outfile,please restart server", err)
+	}
+	log_file = file2
 }
 
 //获取函数名字
@@ -106,5 +122,5 @@ func RunFuncName() string {
 }
 
 func NewLoger() Logging {
-	return &Log{prefix: time.Now().Format("2006-01-02 15:04:05"), file: log_file}
+	return &Log{prefix: log_prefix + " " + time_prefix, file: log_file}
 }

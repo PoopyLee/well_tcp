@@ -48,7 +48,7 @@ func (this *Group) SendToGroup(GroupName string, Data string) {
 				return
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->GroupName Not Exits,Send To ", GroupName, " Failed!")
+		log.NewLoger().Error("GroupName Not Exits,Send To ", GroupName, " Failed!")
 	}()
 }
 
@@ -82,7 +82,7 @@ func (this *Group) DelGroupConn(GroupName string, ConnId int64) {
 				return
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->GroupName Or ConnId Not Exits,Delete Failed!")
+		log.NewLoger().Error("GroupName Or ConnId Not Exits,Delete Failed!")
 	}()
 }
 
@@ -124,7 +124,7 @@ func (this *Group) delGroup(Id int64) {
 				}
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->Id Not Exits,Delete Failed!")
+		log.NewLoger().Error("Id Not Exits,Delete Failed!")
 	}()
 }
 

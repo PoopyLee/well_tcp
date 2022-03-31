@@ -59,6 +59,6 @@ func (this *LinkManger) SendToId(Id int64, Data string) {
 				return
 			}
 		}
-		log.NewLoger().Error(log.RunFuncName(), "--->Id Not Exits,Send To ", Id, "Failed!")
+		log.NewLoger().Error("--->Id Not Exits,Send To ", Id, "Failed!")
 	}()
 }
