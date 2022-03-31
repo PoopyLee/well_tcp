@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+var log_file *os.File
+
 type Log struct {
 	prefix string
 	file   *os.File
@@ -22,6 +24,15 @@ type Logging interface {
 	Panic(a ...interface{})
 	SetPrefix(Prefix string)
 	SetLogFile(File string)
+}
+
+func init() {
+	os.Mkdir("logs", 0777)
+	file2, err := os.Open("logs/" + time.Now().Format("2006-01-02") + ".log")
+	if err != nil {
+		file2, _ = os.Create("logs/" + time.Now().Format("2006-01-02") + ".log")
+	}
+	log_file = file2
 }
 
 func (this *Log) Debug(a ...interface{}) {
@@ -89,10 +100,5 @@ func RunFuncName() string {
 }
 
 func NewLoger() Logging {
-	os.Mkdir("logs", 0777)
-	file2, err := os.Open("logs/" + time.Now().Format("2006-01-02") + ".log")
-	if err != nil {
-		file2, _ = os.Create("logs/" + time.Now().Format("2006-01-02") + ".log")
-	}
-	return &Log{prefix: time.Now().Format("2006-01-02 15:04:05"), file: file2}
+	return &Log{prefix: time.Now().Format("2006-01-02 15:04:05"), file: log_file}
 }
