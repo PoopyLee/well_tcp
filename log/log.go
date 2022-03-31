@@ -40,6 +40,7 @@ func (this *Log) Debug(a ...interface{}) {
 		color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "DEBUG", a))
+		this.file.Sync()
 	}
 }
 
@@ -48,6 +49,7 @@ func (this *Log) Info(a ...interface{}) {
 		color.New(color.FgBlue).Println(this.prefix, "INFO", a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "INFO", a))
+		this.file.Sync()
 	}
 }
 func (this *Log) Warn(a ...interface{}) {
@@ -55,6 +57,7 @@ func (this *Log) Warn(a ...interface{}) {
 		color.New(color.FgYellow).Println(this.prefix, "WARN", a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "WARN", a))
+		this.file.Sync()
 	}
 }
 func (this *Log) Error(a ...interface{}) {
@@ -62,6 +65,7 @@ func (this *Log) Error(a ...interface{}) {
 		color.New(color.FgRed).Println(this.prefix, "ERROR", a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "ERROR", a))
+		this.file.Sync()
 	}
 }
 func (this *Log) Panic(a ...interface{}) {
@@ -69,6 +73,7 @@ func (this *Log) Panic(a ...interface{}) {
 		color.New(color.FgCyan).Println(this.prefix, "PANIC", a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v %v %v", this.prefix, "PANIC", a))
+		this.file.Sync()
 	}
 }
 
@@ -77,6 +82,7 @@ func (this *Log) Println(a ...interface{}) {
 		color.New().Println(a)
 	} else {
 		this.file.WriteString(fmt.Sprintf("%v", a))
+		this.file.Sync()
 	}
 }
 
