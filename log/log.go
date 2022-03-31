@@ -89,5 +89,10 @@ func RunFuncName() string {
 }
 
 func NewLoger() Logging {
-	return &Log{prefix: time.Now().Format("2006-01-02 15:04:05")}
+	os.Mkdir("logs", 0777)
+	file2, err := os.Open("logs/" + time.Now().Format("2006-01-02") + ".log")
+	if err != nil {
+		file2, _ = os.Create("logs/" + time.Now().Format("2006-01-02") + ".log")
+	}
+	return &Log{prefix: time.Now().Format("2006-01-02 15:04:05"), file: file2}
 }
