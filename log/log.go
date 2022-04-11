@@ -107,8 +107,8 @@ func (this *Log) SetLogFile(File string) {
 	}
 	file2, err := os.OpenFile(File, os.O_APPEND, 0777)
 	if err != nil {
-		file2, err = os.Create(File)
 		NewLoger().Error("no outfile,please restart server", err)
+		file2, err = os.Create(File)
 	}
 	log_file = file2
 }

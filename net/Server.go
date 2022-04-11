@@ -32,6 +32,8 @@ type WellServer struct {
 	IpVersion    string
 	Version      string
 	lin          *net.TCPListener
+	LinkManger
+	Group
 }
 
 type wellServerInterface interface {
@@ -92,7 +94,7 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		Port:         Port,
 		ServerRouter: &ServerRouter{},
 		ConnRouter:   &ConnRouter{},
-		Version:      "1.1.3",
+		Version:      "1.1.9",
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
