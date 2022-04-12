@@ -41,6 +41,8 @@ type wellServerInterface interface {
 	AddServerRouter(s WellServerRouter)
 	AddConnRouter(c WellConnRouter)
 	Close()
+	Groups() *Group
+	Links() *LinkManger
 }
 
 func (this *WellServer) Run() {
@@ -55,6 +57,7 @@ func (this *WellServer) Run() {
 	this.lin = lin
 	defer lin.Close()
 
+	runlogo(*this)
 	log.NewLoger().Info("The Server Name:", this.Name, "The Server Version:", this.Version, "And Now Server is Running!")
 
 	this.ServerRouter.OnStart() //服务启动前执行函数
@@ -73,17 +76,22 @@ func (this *WellServer) Run() {
 }
 
 func (this *WellServer) AddServerRouter(s WellServerRouter) {
-	log.NewLoger().Info("Add ServerRouter Success!")
 	this.ServerRouter = s
 }
 
 func (this *WellServer) AddConnRouter(c WellConnRouter) {
-	log.NewLoger().Info("Add ConnRouter Success!")
 	this.ConnRouter = c
 }
 
 func (this *WellServer) Close() {
 	this.lin.Close()
+}
+
+func (this *WellServer) Groups() *Group {
+	return &this.Group
+}
+func (this *WellServer) Links() *LinkManger {
+	return &this.LinkManger
 }
 
 //创建句柄
@@ -98,7 +106,6 @@ func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
-	runlogo(s)
 	return &s
 }
 

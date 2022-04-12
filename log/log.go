@@ -12,6 +12,7 @@ import (
 var log_file *os.File
 var log_prefix string
 var time_prefix string
+var Debug bool
 
 type Log struct {
 	prefix string
@@ -32,13 +33,16 @@ type Logging interface {
 
 func init() {
 	log_file = nil
+	Debug = true
 	log_prefix = "[WELL]"
 	time_prefix = time.Now().Format("2006-01-02 / 15:04:05") + " ▶"
 }
 
 func (this *Log) Debug(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
+		if Debug {
+			color.New(color.FgGreen).Println(this.prefix, "DEBUG", a)
+		}
 	} else {
 		this.Lock()
 		defer this.Unlock()
@@ -48,7 +52,9 @@ func (this *Log) Debug(a ...interface{}) {
 
 func (this *Log) Info(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgBlue).Println(this.prefix, "INFO", a)
+		if Debug {
+			color.New(color.FgBlue).Println(this.prefix, "INFO", a)
+		}
 	} else {
 		this.Lock()
 		defer this.Unlock()
@@ -57,7 +63,9 @@ func (this *Log) Info(a ...interface{}) {
 }
 func (this *Log) Warn(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgYellow).Println(this.prefix, RunFuncName(), "WARN", a)
+		if Debug {
+			color.New(color.FgYellow).Println(this.prefix, RunFuncName(), "WARN", a)
+		}
 	} else {
 		this.Lock()
 		defer this.Unlock()
@@ -66,7 +74,9 @@ func (this *Log) Warn(a ...interface{}) {
 }
 func (this *Log) Error(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgRed).Println(this.prefix, RunFuncName(), "ERROR", a)
+		if Debug {
+			color.New(color.FgRed).Println(this.prefix, RunFuncName(), "ERROR", a)
+		}
 		os.Exit(0)
 	} else {
 		this.Lock()
@@ -74,10 +84,13 @@ func (this *Log) Error(a ...interface{}) {
 		this.file.WriteString(fmt.Sprintln(this.prefix, RunFuncName(), "ERROR", a))
 		os.Exit(0)
 	}
+
 }
 func (this *Log) Panic(a ...interface{}) {
 	if this.file == nil {
-		color.New(color.FgCyan).Println(this.prefix, RunFuncName(), "PANIC", a)
+		if Debug {
+			color.New(color.FgCyan).Println(this.prefix, RunFuncName(), "PANIC", a)
+		}
 		panic(fmt.Sprintln(a))
 	} else {
 		this.Lock()
@@ -89,7 +102,9 @@ func (this *Log) Panic(a ...interface{}) {
 
 func (this *Log) Println(a ...interface{}) {
 	if this.file == nil {
-		color.New().Println(a)
+		if Debug {
+			color.New().Println(a)
+		}
 	} else {
 		this.Lock()
 		defer this.Unlock()
