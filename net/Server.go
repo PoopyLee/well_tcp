@@ -36,7 +36,7 @@ type WellServer struct {
 	Group
 }
 
-type wellServerInterface interface {
+type WellServerInterface interface {
 	Run()
 	AddServerRouter(s WellServerRouter)
 	AddConnRouter(c WellConnRouter)
@@ -95,14 +95,14 @@ func (this *WellServer) Links() *LinkManger {
 }
 
 //创建句柄
-func NewServerHandle(Name, IpAddr, Port string) wellServerInterface {
+func NewServerHandle(Name, IpAddr, Port string) WellServerInterface {
 	s := WellServer{
 		Name:         Name,
 		IpAddr:       IpAddr,
 		Port:         Port,
 		ServerRouter: &ServerRouter{},
 		ConnRouter:   &ConnRouter{},
-		Version:      "1.1.9",
+		Version:      "1.2.1",
 		IpVersion:    "tcp",
 		lin:          nil,
 	}
